@@ -9,7 +9,7 @@ class TagAdmin(admin.ModelAdmin):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('author', 'name', 'image', 'cooking_time',)
+    list_display = ('id', 'author', 'name', 'image', 'cooking_time',)
     empty_value_display = '-пусто-'
 
 

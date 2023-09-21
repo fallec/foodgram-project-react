@@ -24,6 +24,9 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
+    
+    def __str__(self) -> str:
+        return self.slug
 
 
 class Recipe(models.Model):
@@ -35,7 +38,12 @@ class Recipe(models.Model):
         related_name='recipes'
     )
     name = models.CharField('Название', max_length=200)
-    image = models.ImageField('Ссылка на картинку на сайте')
+    image = models.ImageField(
+        'Ссылка на картинку на сайте',
+        upload_to='recipes/images/',
+        null=True,
+        default=None
+    )
     text = models.TextField('Описание')
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -58,6 +66,9 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
+    
+    def __str__(self) -> str:
+        return self.name
 
 
 class RecipeIngredient(models.Model):
@@ -81,3 +92,6 @@ class RecipeIngredient(models.Model):
                 name='unique_ingredient'
             ),
         )
+    
+    def __str__(self) -> str:
+        return f'{self.recipe} {self.ingredient}'
