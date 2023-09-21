@@ -3,6 +3,7 @@ from django.db import models
 from recipes.models import User, Recipe
 
 class ShoppingList(models.Model):
+    """Shopping list model."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -30,6 +31,7 @@ class ShoppingList(models.Model):
 
 
 class Favorite(models.Model):
+    """Favorites model."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -57,6 +59,7 @@ class Favorite(models.Model):
 
 
 class Subscription(models.Model):
+    """Subscriptions model."""
     follower = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
