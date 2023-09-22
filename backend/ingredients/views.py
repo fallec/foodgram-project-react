@@ -14,3 +14,4 @@ class IngredientViewSet(ReadOnlyModelViewSet):
     filter_backends =(filters.DjangoFilterBackend,)
     filterset_class = IngredientFilter
     permission_classes = (AllowAny,)
+    pagination_class = None
