@@ -24,7 +24,7 @@ class Tag(models.Model):
     class Meta:
         verbose_name = 'Тег'
         verbose_name_plural = 'Теги'
-    
+
     def __str__(self) -> str:
         return self.slug
 
@@ -57,17 +57,17 @@ class Recipe(models.Model):
         verbose_name='Список тегов',
         related_name='recipes'
     )
-    cooking_time= models.IntegerField(
+    cooking_time = models.IntegerField(
         'Время приготовления (в минутах)',
         validators=(
             MinValueValidator(1),
         )
     )
-    
+
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-    
+
     def __str__(self) -> str:
         return self.name
 
@@ -94,7 +94,7 @@ class RecipeIngredient(models.Model):
                 name='unique_ingredient'
             ),
         )
-    
+
     def __str__(self) -> str:
         return f'{self.recipe} {self.ingredient}'
 
@@ -120,6 +120,6 @@ class RecipeTag(models.Model):
                 name='unique_tag'
             ),
         )
-    
+
     def __str__(self) -> str:
         return f'{self.recipe} {self.tag}'

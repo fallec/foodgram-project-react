@@ -2,6 +2,7 @@ from django.db import models
 
 from recipes.models import User, Recipe
 
+
 class ShoppingList(models.Model):
     """Shopping list model."""
     recipe = models.ForeignKey(
@@ -26,7 +27,7 @@ class ShoppingList(models.Model):
                 name='unique_shopping_item'
             ),
         )
-    
+
     def __str__(self) -> str:
         return f'{self.user} {self.recipe}'
 
@@ -55,7 +56,7 @@ class Favorite(models.Model):
                 name='unique_favorite'
             ),
         )
-    
+
     def __str__(self) -> str:
         return f'{self.user} {self.recipe}'
 
@@ -83,6 +84,6 @@ class Subscription(models.Model):
                 name='unique_subscription'
             ),
         )
-    
+
     def __str__(self) -> str:
         return f'{self.follower} {self.author}'

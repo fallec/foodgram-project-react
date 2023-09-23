@@ -11,7 +11,7 @@ class IngredientViewSet(ReadOnlyModelViewSet):
     """Access Ingredient model."""
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
-    filter_backends =(filters.DjangoFilterBackend,)
+    filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = IngredientFilter
     permission_classes = (AllowAny,)
     pagination_class = None

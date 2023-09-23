@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from .models import ShoppingList, Subscription, Favorite
 
+
 class ShoppingListAdmin(admin.ModelAdmin):
     list_display = ('id', 'user', 'recipe',)
     search_fields = ('user__username',)
