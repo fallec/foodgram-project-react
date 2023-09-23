@@ -42,7 +42,7 @@ class Recipe(models.Model):
         'Ссылка на картинку на сайте',
         upload_to='recipes/images/',
         null=True,
-        default=None
+        default=None,
     )
     text = models.TextField('Описание')
     ingredients = models.ManyToManyField(
@@ -53,6 +53,7 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
+        through='RecipeTag',
         verbose_name='Список тегов',
         related_name='recipes'
     )
@@ -76,7 +77,8 @@ class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        verbose_name='Рецепт'
+        verbose_name='Рецепт',
+        related_name='r_ingredients'
     )
     ingredient = models.ForeignKey(
         Ingredient,
@@ -95,3 +97,29 @@ class RecipeIngredient(models.Model):
     
     def __str__(self) -> str:
         return f'{self.recipe} {self.ingredient}'
+
+
+class RecipeTag(models.Model):
+    """Recipe - Tag model."""
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        verbose_name='Рецепт',
+        related_name='r_tags'
+    )
+    tag = models.ForeignKey(
+        Tag,
+        on_delete=models.CASCADE,
+        verbose_name='Тег'
+    )
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                fields=('recipe', 'tag',),
+                name='unique_tag'
+            ),
+        )
+    
+    def __str__(self) -> str:
+        return f'{self.recipe} {self.tag}'
