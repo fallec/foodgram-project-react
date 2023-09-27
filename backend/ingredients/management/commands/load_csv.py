@@ -36,5 +36,5 @@ class Command(BaseCommand):
         Tag.objects.create(
             name=name,
             color=color,
-            slug = slug
+            slug=slug
         )

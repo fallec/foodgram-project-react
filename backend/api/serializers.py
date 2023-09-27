@@ -60,7 +60,7 @@ class RecipeTagField(serializers.Field):
 
 class RecipeSerializer(serializers.ModelSerializer):
     """Serializer for Recipes model."""
-    image = Base64ImageField(required=True)
+    image = Base64ImageField(required=False)
     ingredients = RecipeIngredientSerializer(required=True, many=True)
     author = UserSerializer(read_only=True)
     tags = serializers.ListField(required=True)
@@ -84,10 +84,6 @@ class RecipeSerializer(serializers.ModelSerializer):
             instance, context={'request': self.context.get('request')}).data
 
     def validate(self, data):
-        image = self.initial_data.get('image')
-        print(image)
-        if not (isinstance(image, str) and image.startswith('data:image')):
-            raise serializers.ValidationError()
         name = data.get('name')
         flag = False
         for letter in name:
@@ -118,6 +114,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        image = self.initial_data.get('image')
+        if not (isinstance(image, str) and image.startswith('data:image')):
+            raise serializers.ValidationError()
+
         tags = validated_data.pop('tags')
         ingredients = validated_data.pop('ingredients')
 

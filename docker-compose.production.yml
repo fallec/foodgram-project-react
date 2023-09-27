@@ -13,7 +13,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   backend:
-    build: ./backend/
+    image: fallec/foodgram_backend
     env_file: ./.env
     volumes:
       - static:/backend_static/
@@ -22,12 +22,12 @@ services:
       - db
 
   frontend:
-    build: ./frontend/
+    image: fallec/foodgram_frontend
     volumes:
       - static:/static/
 
   nginx:
-    build: ./nginx/
+    image: fallec/foodgram_gateway
     ports:
       - "8080:80"
     volumes:
