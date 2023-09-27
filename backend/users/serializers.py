@@ -1,10 +1,6 @@
-from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from api.models import Subscription
-
-
-User = get_user_model()
+from .models import Subscription, User
 
 
 class UserSerializer(serializers.ModelSerializer):

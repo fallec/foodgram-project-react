@@ -1,13 +1,10 @@
-from django.contrib.auth import get_user_model
 from rest_framework import status, viewsets, permissions, mixins
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from djoser import serializers
 
 from .serializers import UserSerializer
-
-
-User = get_user_model()
+from .models import User
 
 
 class UserViewSet(viewsets.GenericViewSet,

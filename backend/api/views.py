@@ -5,8 +5,9 @@ from rest_framework import viewsets, mixins, permissions, serializers
 from rest_framework.response import Response
 from rest_framework.decorators import action
 
-from recipes.models import RecipeIngredient
-from .models import Favorite, Recipe, User, Subscription, ShoppingList
+from recipes.models import (RecipeIngredient, Favorite, Recipe,
+                            User, ShoppingList)
+from users.models import Subscription
 from .serializers import (FavoriteRecipeSerializer, RecipeSerializer,
                           RecipeListSerializer, SubscribeSerializer)
 from .permissions import IsAuthorOrReadOnly
@@ -100,15 +101,16 @@ class SubscribeListViewSet(viewsets.GenericViewSet,
                            mixins.ListModelMixin):
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = SubscribeSerializer
-
+    """Get favorite authors."""
     def get_queryset(self):
         queryset = User.objects.filter(
-            subscription__follower=self.request.user
+            subscriptions__follower=self.request.user
         ).all()
         return queryset
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
+    """Viewset for Recipe model."""
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (IsAuthorOrReadOnly,)
@@ -128,27 +130,26 @@ class RecipeViewSet(viewsets.ModelViewSet):
         is_in_shopping_cart = self.request.query_params.get(
             'is_in_shopping_cart')
         queryset = Recipe.objects.prefetch_related('r_tags')
+
         if author:
             queryset = queryset.filter(author__id=author)
         if tags:
             queryset = queryset.filter(tags__slug__in=tags)
         if is_favorited and self.request.user.is_authenticated:
-            queryset = queryset.filter(favorites__user=self.request.user)
+            queryset = queryset.filter(favorite__user=self.request.user)
         if is_in_shopping_cart and self.request.user.is_authenticated:
-            queryset = queryset.filter(shopping_list__user=self.request.user)
+            queryset = queryset.filter(shoppinglist__user=self.request.user)
         return queryset
 
-    @action(detail=False, permission_classes=[permissions.IsAuthenticated])
+    @action(detail=False,
+            methods=['GET'],
+            permission_classes=[permissions.IsAuthenticated])
     def download_shopping_cart(self, request):
-        if request.method != 'GET':
-            Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        if not request.user.is_authenticated:
-            Response(status=status.HTTP_401_UNAUTHORIZED)
-
         ingredients = RecipeIngredient.objects.filter(
             recipe__author=request.user).all()
 
         shopping_cart = {}
+        m_units = {}
         for ingredient in ingredients:
             name = ingredient.ingredient.name
             amount = ingredient.amount
@@ -156,10 +157,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 shopping_cart[name] += amount
             else:
                 shopping_cart[name] = amount
+                m_units[name] = ingredient.ingredient.measurement_unit
 
-        text = ''
+        text = f'Ваш список покупок, {request.user.first_name}!\n'
         for key, value in shopping_cart.items():
-            text += f'{key}: {value}\n'
+            text += f'{key}: {value} {m_units[key]}\n'
 
         return HttpResponse(
             text, content_type='text/plain', status=status.HTTP_200_OK)

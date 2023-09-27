@@ -2,6 +2,7 @@ import csv
 
 from django.core.management.base import BaseCommand
 from ingredients.models import Ingredient
+from recipes.models import Tag
 
 
 class Command(BaseCommand):
@@ -11,13 +12,13 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         filename_method = {
             'ingredients': self.import_ingredient,
+            'tags': self.import_tag,
         }
         filename = options['filename']
         file_path = f'data/{filename}.csv'
 
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.reader(file)
-            next(reader)
             import_method = filename_method[filename]
 
             for row in reader:
@@ -28,4 +29,12 @@ class Command(BaseCommand):
         Ingredient.objects.create(
             name=name,
             measurement_unit=measurement_unit
+        )
+
+    def import_tag(self, row):
+        name, color, slug = row
+        Tag.objects.create(
+            name=name,
+            color=color,
+            slug = slug
         )
