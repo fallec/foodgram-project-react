@@ -100,9 +100,10 @@ class SubscribeViewSet(viewsets.GenericViewSet):
 
 class SubscribeListViewSet(viewsets.GenericViewSet,
                            mixins.ListModelMixin):
+    """Get favorite authors."""
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = SubscribeSerializer
-    """Get favorite authors."""
+    pagination_class = RecipePagination
     def get_queryset(self):
         queryset = User.objects.filter(
             followers__follower=self.request.user
