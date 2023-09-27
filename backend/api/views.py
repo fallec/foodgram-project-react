@@ -105,7 +105,7 @@ class SubscribeListViewSet(viewsets.GenericViewSet,
     """Get favorite authors."""
     def get_queryset(self):
         queryset = User.objects.filter(
-            subscriptions__follower=self.request.user
+            followers__follower=self.request.user
         ).all()
         return queryset
 
