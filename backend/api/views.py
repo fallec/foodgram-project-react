@@ -11,6 +11,7 @@ from users.models import Subscription
 from .serializers import (FavoriteRecipeSerializer, RecipeSerializer,
                           RecipeListSerializer, SubscribeSerializer)
 from .permissions import IsAuthorOrReadOnly
+from .paginators import RecipePagination
 
 
 class FavoriteViewSet(viewsets.GenericViewSet):
@@ -114,6 +115,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     permission_classes = (IsAuthorOrReadOnly,)
+    pagination_class = RecipePagination
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
