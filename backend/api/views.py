@@ -104,6 +104,7 @@ class SubscribeListViewSet(viewsets.GenericViewSet,
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = SubscribeSerializer
     pagination_class = RecipePagination
+
     def get_queryset(self):
         queryset = User.objects.filter(
             followers__follower=self.request.user
