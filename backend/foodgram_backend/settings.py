@@ -97,6 +97,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://foodgramishe.duckdns.org',
+    'https://www.foodgramishe.duckdns.org'
+]
+
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Europe/Moscow'
