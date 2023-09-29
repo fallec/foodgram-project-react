@@ -89,7 +89,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         for letter in name:
             if letter.isalpha():
                 flag = True
-        if not flag:
+        if not (flag and len(name > 2)):
             raise serializers.ValidationError()
 
         ingredients = data.get('ingredients')
