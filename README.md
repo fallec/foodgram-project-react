@@ -1,6 +1,7 @@
 # foodgram
 
-Сайт для обмена рецептами.
+Сайт для обмена рецептами. 
+[foodgramishe.duckdns.org](https://foodgramishe.duckdns.org/)
 
 ## Возможности:
 - создание/редактировани/удаление рецепта
