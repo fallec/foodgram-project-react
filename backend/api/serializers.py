@@ -85,10 +85,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         name = data.get('name')
-        l_count = 0
-        for letter in name:
-            if letter.isalpha():
-                l_count += 1
+        l_count = sum(l.isalpha() for l in name)
         if l_count < 2:
             raise serializers.ValidationError(
                 'Название должно содержать минимум две буквы.')
